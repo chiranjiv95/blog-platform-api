@@ -7,11 +7,13 @@ const {
   getAllPosts,
   getPostById,
   deletePost,
+  updatePost,
 } = require("../controllers/postController");
 
 router.post("/", authMiddleware, createPost);
 router.get("/", getAllPosts);
 router.get("/:id", getPostById);
 router.delete("/:id", authMiddleware, deletePost);
+router.patch("/:id", authMiddleware, updatePost);
 
 module.exports = router;

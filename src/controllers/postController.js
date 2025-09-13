@@ -64,6 +64,56 @@ exports.getPostById = async (req, res) => {
   }
 };
 
+exports.updatePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const authorId = req.user.id;
+
+    // Find the post first to check ownership
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+
+    // Check if the logged-in user is the author
+    if (post.author.toString() !== authorId) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to update this post",
+      });
+    }
+
+    // Update fields if provided
+    if (req.body.title) post.title = req.body.title;
+    if (req.body.content) post.content = req.body.content;
+
+    const updatedPost = await post.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Post updated successfully",
+      post: updatedPost,
+    });
+  } catch (error) {
+    // Handle invalid ObjectId
+    if (error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid post ID format",
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: "Error updating post",
+      error: error.message,
+    });
+  }
+};
+
 exports.deletePost = async (req, res) => {
   try {
     const { id } = req.params;
