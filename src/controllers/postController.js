@@ -40,3 +40,22 @@ exports.getAllPosts = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
+exports.getPostById = async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    const post = await Post.findById(postId).populate("author", "name email");
+
+    if (!post) {
+      return res
+        .status(404)
+        .json({ message: `Post with id ${postId} not found` });
+    }
+
+    res.status(200).json({ post });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
