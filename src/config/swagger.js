@@ -1,6 +1,6 @@
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const { signupDoc } = require("../docs/userDocs");
+const { signupDoc, loginDoc } = require("../docs/userDocs");
 
 const options = {
   definition: {
@@ -14,9 +14,10 @@ const options = {
     servers: [{ url: "http://localhost:5000" }],
     paths: {
       ...signupDoc, // Merge modular docs here
+      ...loginDoc,
     },
   },
-  apis: [],
+  apis: ["./src/routes/*.js"],
 };
 
 const specs = swaggerJsDoc(options);
