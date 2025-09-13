@@ -1,5 +1,6 @@
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const { signupDoc } = require("../docs/userDocs");
 
 const options = {
   definition: {
@@ -11,8 +12,11 @@ const options = {
         "Production-grade Blog Platform API with Authentication, CRUD, and more",
     },
     servers: [{ url: "http://localhost:5000" }],
+    paths: {
+      ...signupDoc, // Merge modular docs here
+    },
   },
-  apis: ["./src/routes/*.js"], // We'll add route-level documentation later
+  apis: [],
 };
 
 const specs = swaggerJsDoc(options);
