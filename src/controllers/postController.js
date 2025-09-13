@@ -56,6 +56,10 @@ exports.getPostById = async (req, res) => {
     res.status(200).json({ post });
   } catch (error) {
     console.error(error);
+    // ✅ Handle invalid ObjectId format
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid Post ID format" });
+    }
     res.status(500).json({ message: "Server Error" });
   }
 };
