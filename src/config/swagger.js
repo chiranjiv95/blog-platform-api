@@ -1,6 +1,6 @@
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const { signupDoc, loginDoc } = require("../docs/userDocs");
+const { signupDoc, loginDoc, profileDoc } = require("../docs/userDocs");
 
 const options = {
   definition: {
@@ -12,9 +12,19 @@ const options = {
         "Production-grade Blog Platform API with Authentication, CRUD, and more",
     },
     servers: [{ url: "http://localhost:5000" }],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
     paths: {
       ...signupDoc, // Merge modular docs here
       ...loginDoc,
+      ...profileDoc,
     },
   },
   apis: ["./src/routes/*.js"],

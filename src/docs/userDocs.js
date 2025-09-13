@@ -84,4 +84,25 @@ const loginDoc = {
   },
 };
 
-module.exports = { signupDoc, loginDoc };
+const profileDoc = {
+  "/api/users/profile": {
+    get: {
+      tags: ["Users"],
+      summary: "Get logged-in user's profile",
+      security: [{ bearerAuth: [] }],
+      responses: {
+        200: {
+          description: "User profile fetched successfully",
+        },
+        401: {
+          description: "Unauthorized (Invalid or missing token)",
+        },
+        500: {
+          description: " Server error",
+        },
+      },
+    },
+  },
+};
+
+module.exports = { signupDoc, loginDoc, profileDoc };
